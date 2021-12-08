@@ -2,6 +2,7 @@
 import express from "express";
 import http from "http";
 import { Server } from "socket.io";
+import { socketConnectionController } from "./controllers/socketConnection";
 
 const app = express();
 const server = http.createServer(app);
@@ -13,13 +14,7 @@ app.get("/", (req, res) => {
   res.send("Hello world!");
 });
 
-io.on("connection", (socket) => {
-  console.log("a user connected");
-  socket.on("message", (message) => {
-    console.log(message);
-    io.emit("message", message);
-  });
-});
+io.on("connection", socketConnectionController(io));
 
 // start the Express server
 server.listen(port, () => {
