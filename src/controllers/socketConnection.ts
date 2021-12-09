@@ -21,11 +21,11 @@ export const socketConnectionController = (io: Server) => (socket: Socket) => {
     }
   }
 
-  const [room] = socket.rooms;
-  socket.emit("message", { room });
+  const [assignedSocketRoom] = socket.rooms;
+  socket.emit("message", { assignedSocketRoom });
 
   socket.on("message", (message) => {
-    const [room] = socket.rooms;
-    io.to(room).emit("message", message);
+    const [roomOfSocket] = socket.rooms;
+    io.to(roomOfSocket).emit("message", message);
   });
 };
