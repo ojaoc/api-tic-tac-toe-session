@@ -2,7 +2,7 @@
 import express from "express";
 import http from "http";
 import { Server } from "socket.io";
-import { socketConnectionController } from "./controllers/socketConnection";
+import { socketConnectionController } from "./controllers/socket-connection";
 
 const app = express();
 const server = http.createServer(app);
