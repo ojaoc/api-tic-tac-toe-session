@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 
 export const joinRoomController =
     ({ io, socket, rooms }: EventHandlerArgs) =>
-    (roomId: string, cb: (arg0: RoomResponse) => void): void => {
+    (roomId: string, callback: (arg0: RoomResponse) => void): void => {
         if (!roomId) {
             socket.join(uuidv4());
             const [createdSocketRoomId] = socket.rooms;
@@ -11,7 +11,8 @@ export const joinRoomController =
                 id: createdSocketRoomId,
                 isFull: rooms.get(createdSocketRoomId).size >= 2,
             };
-            cb(roomObj);
+            callback(roomObj);
+            socket.emit("room:join", "OK");
             io.emit("room:created", roomObj);
         } else {
             if (!rooms.get(roomId)) {
@@ -28,7 +29,8 @@ export const joinRoomController =
                     id: roomId,
                     isFull: rooms.get(roomId).size >= 2,
                 };
-                cb(roomObj);
+                callback(roomObj);
+                socket.emit("room:join", "OK");
                 io.emit("room:updated", roomObj);
             }
         }
